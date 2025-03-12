@@ -1,19 +1,24 @@
 package com.remind.backend.controller;
 
 import com.remind.backend.exception.CustomExceptionForTest;
+import com.remind.backend.model.Member;
+import com.remind.backend.model.dto.MemberDto;
+import com.remind.backend.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Email;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @Validated
+@RequiredArgsConstructor
 public class MainController {
+
+    private final MemberService memberService;
+
     @RequestMapping(value="/v1/npe-test", method= RequestMethod.GET)
     @Operation(summary="사용자 조회", description = "ID를 이용해 사용자 조회",
         responses = {
@@ -53,5 +58,10 @@ public class MainController {
     )
     public String customTest(@RequestParam(required = true) @Email String uid){
         return "hi";
+    }
+
+    //TODO: mariadb 환경 구성
+    public Member signUp(@RequestBody MemberDto dto){
+        return memberService.signUp(dto);
     }
 }

@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,5 +37,10 @@ public class ControllerAdvice {
     @ExceptionHandler(BindException.class)
     public CommonResult bindException(HttpServletRequest request, BindException e){
         return responseService.getFailResult(1003, "bind exception occurred.");
+    }
+
+    @ExceptionHandler(DataAccessResourceFailureException.class)
+    public CommonResult dbConnectException(HttpServletRequest request, DataAccessResourceFailureException e){
+        return responseService.getFailResult(1004, "database connection failed");
     }
 }
